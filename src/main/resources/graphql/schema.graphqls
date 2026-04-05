@@ -1,0 +1,32 @@
+type Query {
+    dashboardSummary(dateFrom: String, dateTo: String): DashboardSummary!
+    categoryBreakdown(dateFrom: String, dateTo: String): [CategoryTotal!]!
+    monthlyTrends(dateFrom: String, dateTo: String): [MonthlyTrend!]!
+    recentTransactions(limit: Int, dateFrom: String, dateTo: String): [RecentTransaction!]!
+}
+
+type DashboardSummary {
+    totalIncome: String!
+    totalExpense: String!
+    netBalance: String!
+}
+
+type CategoryTotal {
+    category: String!
+    totalAmount: String!
+    type: String!
+}
+
+type MonthlyTrend {
+    month: String!
+    income: String!
+    expense: String!
+}
+
+type RecentTransaction {
+    id: ID!
+    amount: String!
+    type: String!
+    category: String!
+    date: String!
+}
