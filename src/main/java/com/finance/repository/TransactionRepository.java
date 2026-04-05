@@ -118,7 +118,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
             nativeQuery = true,
             value =
                     """
-                    SELECT (DATE_TRUNC('month', t.date))::date AS month,
+                    SELECT CAST(DATE_TRUNC('month', t.date) AS date) AS month,
                            COALESCE(SUM(CASE WHEN t.type = 'INCOME' THEN t.amount ELSE 0 END), 0) AS income,
                            COALESCE(SUM(CASE WHEN t.type = 'EXPENSE' THEN t.amount ELSE 0 END), 0) AS expense
                     FROM transactions t
