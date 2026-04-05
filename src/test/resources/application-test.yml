@@ -1,0 +1,17 @@
+spring:
+  flyway:
+    enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  datasource:
+    url: YOUR_URL
+    username: YOUR_USERNAME
+    password: YOUR_PASSWORD
+
+app:
+  jwt:
+    secret:YOUR_SECRET_KEY
+logging:
+  level:
+    org.springframework.security: WARN
