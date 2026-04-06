@@ -100,7 +100,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
             value =
                     """
                     SELECT t.category AS category,
-                           t.type AS transaction_type,
+                           t.type AS transactionType,
                            COALESCE(SUM(t.amount), 0) AS total_amount
                     FROM transactions t
                     WHERE t.is_deleted = false
