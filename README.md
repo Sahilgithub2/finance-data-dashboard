@@ -90,7 +90,7 @@ Secrets and environment-specific values belong in a **local `.env` file** (gitig
 
 2. On startup, **`DotenvBootstrap`** loads `.env` into JVM system properties **before** Spring starts. **Existing OS environment variables are never overwritten** by the file, so Docker/Kubernetes/CI secrets keep precedence.
 
-3. `src/main/resources/application.yml` only references placeholders (for example `${APP_JWT_SECRET:}`, `${SPRING_DATASOURCE_PASSWORD:}`). Defaults are intentionally minimal so misconfiguration is obvious.
+3. `src/main/resources/application.yml` uses placeholders with local defaults for the datasource. **Do not** put placeholder strings like `YOUR_DB_URL` or `${SPRING_DATASOURCE_URL}` in `.env` for `SPRING_DATASOURCE_URL` — use a real `jdbc:postgresql://...` URL or omit that variable so the YAML default applies.
 
 | Variable | Purpose |
 |----------|---------|
@@ -115,7 +115,7 @@ Flyway: `src/main/resources/db/migration/V1__init.sql`
 
 ## Run locally
 
-1. Create `.env` from `.env.example` and set **`SPRING_DATASOURCE_PASSWORD`** and **`APP_JWT_SECRET`** (see table above).
+1. Create `.env` from `.env.example` and set **`APP_JWT_SECRET`** (≥ 32 characters). For local Postgres matching the YAML defaults (`localhost:5432/finance`, `postgres` / `admin`), you can omit datasource variables in `.env`; uncomment or set them only when you use a non-default database.
 
 2. Start PostgreSQL and create DB/user (match your `.env`):
 
@@ -133,7 +133,9 @@ Flyway: `src/main/resources/db/migration/V1__init.sql`
    mvn spring-boot:run
    ```
 
-4. Demo users (seeded only when the `users` table is empty):
+4. **Swagger UI** (OpenAPI 3): [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html) — call **POST /api/auth/login**, copy `token`, click **Authorize**, paste the token (Swagger adds `Bearer`). Raw spec: `/v3/api-docs`. GraphQL is not included; use `/graphiql` or **POST /graphql** with the same JWT.
+
+5. Demo users (seeded only when the `users` table is empty):
 
    | Email | Password | Role |
    |-------|----------|------|
