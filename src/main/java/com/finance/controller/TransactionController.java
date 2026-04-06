@@ -6,6 +6,8 @@ import com.finance.dto.transaction.TransactionResponse;
 import com.finance.dto.transaction.TransactionUpdateRequest;
 import com.finance.enums.TransactionType;
 import com.finance.service.TransactionService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.time.LocalDate;
 import org.springframework.security.core.Authentication;
@@ -21,6 +23,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/transactions")
+@Tag(
+        name = "Transactions",
+        description =
+                "Admin & Analyst: list all. Viewer: use **GET /mine** only (403 on list-all). Mutations: owner or Admin.")
 public class TransactionController {
 
     private final TransactionService transactionService;
@@ -29,6 +35,7 @@ public class TransactionController {
         this.transactionService = transactionService;
     }
 
+    @Operation(summary = "List all transactions (paged)", description = "Admin and Analyst. Optional filters: type, category, from, to.")
     @GetMapping
     public PagedTransactionsResponse list(
             @RequestParam(required = false) TransactionType type,
@@ -40,6 +47,7 @@ public class TransactionController {
         return transactionService.findAll(type, category, from, to, page, size);
     }
 
+    @Operation(summary = "List my transactions (paged)")
     @GetMapping("/mine")
     public PagedTransactionsResponse mine(
             @RequestParam(required = false) TransactionType type,
@@ -52,12 +60,14 @@ public class TransactionController {
         return transactionService.findMine(type, category, from, to, page, size, authentication);
     }
 
+    @Operation(summary = "Create transaction", description = "Assigned to the authenticated user.")
     @PostMapping
     public TransactionResponse create(
             @Valid @RequestBody TransactionCreateRequest request, Authentication authentication) {
         return transactionService.create(request, authentication);
     }
 
+    @Operation(summary = "Update transaction", description = "Admin or transaction owner.")
     @PutMapping("/{id}")
     public TransactionResponse update(
             @PathVariable Long id,
@@ -66,6 +76,7 @@ public class TransactionController {
         return transactionService.update(id, request, authentication);
     }
 
+    @Operation(summary = "Soft-delete transaction", description = "Admin or transaction owner.")
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id, Authentication authentication) {
         transactionService.softDelete(id, authentication);
