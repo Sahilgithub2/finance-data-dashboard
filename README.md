@@ -133,7 +133,7 @@ Flyway: `src/main/resources/db/migration/V1__init.sql`
    mvn spring-boot:run
    ```
 
-4. Demo users (seeded only when the `users` table is empty):
+4.  Demo users (seeded only when the `users` table is empty):
 
    | Email | Password | Role |
    |-------|----------|------|
