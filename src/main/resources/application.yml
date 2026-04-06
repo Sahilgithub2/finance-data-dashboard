@@ -29,10 +29,18 @@ server:
 
 app:
   jwt:
-    secret: ${APP_JWT_SECRET:}
+    secret: ${APP_JWT_SECRET}
     expiration-ms: ${APP_JWT_EXPIRATION_MS:86400000}
   rate-limit:
     requests-per-minute: ${APP_RATE_LIMIT_REQUESTS_PER_MINUTE:100}
+
+springdoc:
+  swagger-ui:
+    tags-sorter: alpha
+    operations-sorter: method
+    display-request-duration: true
+  api-docs:
+    path: /v3/api-docs
 
 logging:
   level:
