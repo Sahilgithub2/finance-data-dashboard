@@ -28,11 +28,17 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(
-                        auth ->
-                                auth.requestMatchers(HttpMethod.POST, "/api/auth/register", "/api/auth/login")
-                                        .permitAll()
-                                        .requestMatchers("/graphiql/**", "/graphql/schema")
-                                        .permitAll()
+                                auth ->
+                                        auth.requestMatchers(HttpMethod.POST, "/api/auth/register", "/api/auth/login")
+                                                .permitAll()
+                                                .requestMatchers(
+                                                        "/swagger-ui/**",
+                                                        "/swagger-ui.html",
+                                                        "/v3/api-docs/**",
+                                                        "/v3/api-docs.yaml")
+                                                .permitAll()
+                                                .requestMatchers("/graphiql/**", "/graphql/schema")
+                                                .permitAll()
                                         .requestMatchers("/graphql")
                                         .authenticated()
                                         .requestMatchers("/api/**")
