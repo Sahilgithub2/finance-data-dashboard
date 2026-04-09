@@ -181,3 +181,9 @@ The script exercises login (admin / analyst / viewer), user list and RBAC, trans
 ```
 
 GraphQL errors are mapped via `GraphqlExceptionResolver` where applicable.
+
+## 📬 API Documentation
+
+Interactive Postman documentation for all endpoints (Auth, Users, Transactions, GraphQL):
+
+🔗 https://documenter.getpostman.com/view/41781207/2sBXiqFUcm
